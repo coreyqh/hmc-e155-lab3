@@ -1,0 +1,17 @@
+[options]
+mode prove
+depth 10
+
+[engines]
+smtbmc boolector
+
+[files]
+./debouncer_sva.sv
+../src/debouncer.sv
+
+[file defines.sv]
+`define FORMAL
+
+[script]
+read_verilog -sv defines.sv debouncer.sv 
+prep -top debouncer

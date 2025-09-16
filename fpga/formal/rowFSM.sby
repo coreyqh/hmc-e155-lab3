@@ -1,0 +1,17 @@
+[options]
+mode prove
+depth 10
+
+[engines]
+smtbmc boolector
+
+[files]
+./rowFSM_sva.sv
+../src/rowFSM.sv
+
+[file defines.sv]
+`define FORMAL
+
+[script]
+read_verilog -sv defines.sv rowFSM.sv
+prep -top rowFSM

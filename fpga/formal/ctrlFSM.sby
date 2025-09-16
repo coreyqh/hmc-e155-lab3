@@ -1,0 +1,17 @@
+[options]
+mode bmc
+depth 2000
+skip 1999
+
+[engines]
+smtbmc boolector
+[files]
+./ctrlFSM_sva.sv
+../src/ctrlFSM.sv
+
+[file defines.sv]
+`define FORMAL
+
+[script]
+read_verilog -sv defines.sv ctrlFSM.sv
+prep -top ctrlFSM

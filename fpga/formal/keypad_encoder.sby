@@ -1,0 +1,17 @@
+[options]
+mode prove
+depth 5
+
+[engines]
+smtbmc boolector
+
+[files]
+./keypad_encoder_sva.sv
+../src/keypad_encoder.sv
+
+[file defines.sv]
+`define FORMAL
+
+[script]
+read_verilog -sv defines.sv keypad_encoder.sv
+prep -top keypad_encoder
