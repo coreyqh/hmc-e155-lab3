@@ -12,7 +12,14 @@ module lab3_top (
     logic [3:0] s1, s0, s0next;
     logic       dbhigh, dblow, dbreq;
 
-    HSOSC osc (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(clk48kHz));
+    `ifdef VERILATOR 
+        initial begin
+            clk48kHz = 1'b0;
+            forever #20ns clk = ~clk;
+        end
+    `else
+        HSOSC osc (.CLKHFPU(1'b1), .CLKHFEN(1'b1), .CLKHF(clk48kHz));
+    `endif
 
     clkDiv #(.P(35), .N(24)) clkDiv100 (.fastClk(clk48kHz), .slowClk(clk100Hz), .rstn(rstn));
 
@@ -20,8 +27,8 @@ module lab3_top (
 
     always_ff @(posedge clk48kHz, negedge rstn) begin
         if (~rstn) begin
-            colDly  <= 4'b1; 
-            colSync <= 4'b1; 
+            colDly  <= 4'b0; 
+            colSync <= 4'b0; 
         end else begin
             colDly  <= col;
             colSync <= colDly;
@@ -46,7 +53,7 @@ module lab3_top (
             s1 <= s1;
         end
 
-        seven_seg_tmux tmux (.sel(clk100kHz), .s1(s1), .s0(s0), .pwr1(pwr1), .pwr0(pwr0), .seg(seg));
+    seven_seg_tmux tmux (.sel(clk100kHz), .s1(s1), .s0(s0), .pwr1(pwr1), .pwr0(pwr0), .seg(seg));
         // seven_seg_tmux tmux (.clk(clk48kHz), .rstn(rstn), .s1(s1), .s0(s0), .pwr1(pwr1), .pwr0(pwr0), .seg(seg));
 
 endmodule
