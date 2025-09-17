@@ -1,5 +1,5 @@
 `timescale 1ms/1ns
-
+/* verilator lint_off UNUSEDSIGNAL */
 module lab3_tb;
     logic       rstn;
     logic [3:0] col;
@@ -8,6 +8,13 @@ module lab3_tb;
     logic       pwr1, pwr0;
 
     lab3_top dut (.*);
+
+    `ifdef VERILATOR
+        initial begin
+            $dumpfile("trace.vcd");
+            $dumpvars(0, lab3_tb);
+        end
+    `endif 
 
     initial begin
         rstn = 0;
@@ -18,62 +25,63 @@ module lab3_tb;
     initial begin
         #2;
         col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #5ns;
+        #1ms;
         col = 4'b0000;
-        #5ns;
+        #1ms;
         col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #5ns;
+        #1ms;
         col = 4'b0000;
-        #5ns;
+        #1ms;
         col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #5ns;
+        #1ms;
         col = 4'b0000;
-        #5ns;
+        #1ms;
         col = row == 4'b0001 ? 4'b1000 : 4'b0000;
         #10ms;
         assert(dut.s0 == 4'hA);
         col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #5ns;
+        #1ms;
         col = 4'b0000;
-        #5ns;
+        #1ms;
         col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #5ns;
+        #1ms;
         col = 4'b0000;
-        #5ns;
+        #1ms;
         col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #5ns;
+        #1ms;
         col = 4'b0000;
         #10ms;
 
         col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #5ns;
+        #1ms;
         col = 4'b0000;
-        #5ns;
+        #1ms;
         col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #5ns;
+        #1ms;
         col = 4'b0000;
-        #5ns;
+        #1ms;
         col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #5ns;
+        #1ms;
         col = 4'b0000;
-        #5ns;
+        #1ms;
         col = row == 4'b0010 ? 4'b0010 : 4'b0000;
         #10ms;
         assert(dut.s0 == 4'h5);
         assert(dut.s1 == 4'hA);
         col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #5ns;
+        #1ms;
         col = 4'b0000;
-        #5ns;
+        #1ms;
         col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #5ns;
+        #1ms;
         col = 4'b0000;
-        #5ns;
+        #1ms;
         col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #5ns;
+        #1ms;
         col = 4'b0000;
         #10ms;
         $finish;
     end
+/* verilator lint_on UNUSEDSIGNAL */
 
 endmodule

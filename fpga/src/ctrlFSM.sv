@@ -10,7 +10,7 @@ module ctrlFSM (
 
     typedef enum logic [2:0] {IDLE, DEBOUNCE, STROBE, WAIT, ERROR} state_t;
     state_t state, nextstate;
-    logic [3:0] activeCol, nextActiveCol;
+    logic [3:0] nextActiveCol;
 
     // state register
     always_ff @(posedge clk) begin
@@ -32,12 +32,12 @@ module ctrlFSM (
             IDLE:     begin
                 if (col != 4'b0) begin
                     nextstate     = DEBOUNCE;
-                    casex (col)
-                        4'b1xxx: nextActiveCol <= 4'b1000;
-                        4'b01xx: nextActiveCol <= 4'b0100;
-                        4'b001x: nextActiveCol <= 4'b0010;
-                        4'b0001: nextActiveCol <= 4'b0001;
-                        default: nextActiveCol <= 4'bxxxx; // shouldn't happen
+                    casez (col)
+                        4'b1???: nextActiveCol = 4'b1000;
+                        4'b01??: nextActiveCol = 4'b0100;
+                        4'b001?: nextActiveCol = 4'b0010;
+                        4'b0001: nextActiveCol = 4'b0001;
+                        default: nextActiveCol = 4'bxxxx; // shouldn't happen
                     endcase
                 end else begin
                     nextstate     = IDLE;

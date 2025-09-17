@@ -30,9 +30,11 @@ module seven_seg_dec #(parameter ACTIVE_LOW = 1'b1) (
         endcase
     
     // if ACTIVE_LOW param is set, zeros turn on the segments, so invert the bits
+/* verilator lint_off GENUNNAMED */
     if (ACTIVE_LOW) 
         assign seg = ~seg_int;
     else
         assign seg = seg_int; 
+/* verilator lint_on GENUNNAMED */
 
 endmodule

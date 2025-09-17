@@ -1,4 +1,4 @@
-module debouncer #(parameter THRESHOLD = 48_000) (
+module debouncer #(parameter THRESHOLD = 48) (
     input  logic       clk, rstn, en,
     input  logic       req,       // request to debouce one bit
     input  logic [3:0] activeCol, // which bit to debounce (onecold)
@@ -7,7 +7,7 @@ module debouncer #(parameter THRESHOLD = 48_000) (
     output logic       low        // valid low  transition occurred
 );
 
-    enum logic {LOW, HIGH, ERROR} state, nextstate;
+    enum logic [1:0] {LOW, HIGH, ERROR} state, nextstate;
     logic [$clog2(THRESHOLD)-1:0] count, nextcount;
 
     always_ff @(posedge clk) begin
@@ -26,7 +26,7 @@ module debouncer #(parameter THRESHOLD = 48_000) (
     always_comb begin
         case (state)
             LOW:  begin
-                if (~activeCol & col == 4'b0) begin
+                if ((~activeCol & col) == 4'b0) begin
                     nextstate = LOW;
                     nextcount = count + 1;
                 end else begin
@@ -35,7 +35,7 @@ module debouncer #(parameter THRESHOLD = 48_000) (
                 end
             end
             HIGH: begin
-                if (~activeCol & col != 4'b0) begin
+                if ((~activeCol & col) != 4'b0) begin
                     nextstate = HIGH;
                     nextcount = count + 1;
                 end else begin

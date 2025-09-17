@@ -20,3 +20,6 @@ ctrlFSM*/
 debouncer*/
 keypad_encoder*/
 rowFSM*/
+
+# verilator work dir
+obj_dir*/

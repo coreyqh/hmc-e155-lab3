@@ -1,15 +1,25 @@
-module seven_seg_tmux (
-    input  logic       sel,
+module seven_seg_tmux #(parameter P, parameter N) (
+    input  logic       clk, rstn, 
     input  logic [3:0] s1, s0,
     output logic       pwr1, pwr0,
     output logic [6:0] seg
 );
 
+    logic sel;
+    logic [N-1:0] count;
+    
+    always @(posedge clk) begin
+        if (~rstn) count <= {N{1'b0}};
+        else       count <= count + P;
+    end
+
+    assign sel = count[N-1];
+
     logic [3:0] sMuxed;
 
     assign sMuxed = sel ? s1 : s0;
 
-    seven_seg_dec (.s(sMuxed), .seg(seg));
+    seven_seg_dec dec (.s(sMuxed), .seg(seg));
 
     assign pwr0 = ~sel;
     assign pwr1 =  sel;

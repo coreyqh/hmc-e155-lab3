@@ -1,6 +1,6 @@
 module keypad_encoder (
     input  logic [3:0] row, col,
-    output logic [6:0] s
+    output logic [3:0] s
 );
     always_comb
         case({~row, ~col}) // convert from onecold to onehot for readability
@@ -46,7 +46,7 @@ module keypad_encoder (
         endcase
         */
 
-        `ifndef FORMAL
+        `ifdef FORMAL
             `include "keypad_encoder_sva.sv"
         `endif
 

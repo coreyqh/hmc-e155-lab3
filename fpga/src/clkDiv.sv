@@ -1,11 +1,14 @@
-module clkDiv #(parameter P, parameter N) (
+module clkDiv #(parameter D) (
     input  logic fastClk, rstn,
     output logic slowClk
 );
-    logic [N-1:0] counter;
+    logic [$clog2(D)-1:0] counter;
 
     always_ff @(posedge fastClk) begin
-        if (~rstn) counter <= {N{1'b0}};
-        else       counter <= counter + P;
+        if (~rstn || slowClk) counter <= {$clog2(D){1'b0}};
+        else                  counter <= counter + 1'b1;
     end
+
+    assign slowClk = counter == D;
 endmodule
+
