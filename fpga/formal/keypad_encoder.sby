@@ -1,8 +1,9 @@
 [options]
 mode prove
-depth 5
+depth 10
 
 [engines]
+aiger suprove
 smtbmc boolector
 
 [files]

@@ -1,4 +1,4 @@
-module debouncer #(parameter THRESHOLD = 48) (
+module debouncer #(parameter THRESHOLD = 6000) (
     input  logic       clk, rstn, en,
     input  logic       req,       // request to debouce one bit
     input  logic [3:0] activeCol, // which bit to debounce (onecold)

@@ -23,7 +23,7 @@ module lab3_top (
 
     // clkDiv #(.D(480)) clkDiv100 (.fastClk(clk6MHz), .slowClk(clk100Hz), .rstn(rstn));
 
-    rowFSM rowFSM (.clk(clk6MHz), .rstn(rstn), .en(clk6MHz), .stall(stall), .row(row));
+    rowFSM rowFSM (.clk(clk6MHz), .rstn(rstn), .en(1'b1), .stall(stall), .row(row));
 
     always_ff @(posedge clk6MHz) begin
         if (~rstn) begin
@@ -41,7 +41,7 @@ module lab3_top (
 
     ctrlFSM ctrlFSM (.clk(clk6MHz), .rstn(rstn), .en(1'b1), .col(colSync), .dbhigh(dbhigh), .dblow(dblow), .dbreq(dbreq), .stall(stall), .strobe(strobe), .activeCol(activeCol));
 
-    debouncer debouncer (.clk(clk6MHz), .rstn(rstn), .req(dbreq), .en(1'b1), .activeCol(activeCol), .col(colSync), .high(dbhigh), .low(dblow));
+    debouncer #(.THRESHOLD(6000)) debouncer (.clk(clk6MHz), .rstn(rstn), .req(dbreq), .en(1'b1), .activeCol(activeCol), .col(colSync), .high(dbhigh), .low(dblow));
 
     keypad_encoder keypad_encoder (.row(rowSync), .col(activeCol), .s(s0next));
 
