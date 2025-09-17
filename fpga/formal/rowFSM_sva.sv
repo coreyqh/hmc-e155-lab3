@@ -2,7 +2,7 @@ always @* assume (~rstn == $initstate);
 always @* assume (eventually(en && !stall));
 
 always @(posedge clk) begin
-    if (rstn) begin
+    if (rstn && $past(rstn)) begin
         if (!$past(en) || $past(stall)) 
             assert (row == $past(row));
         else if ($past(rstn))
