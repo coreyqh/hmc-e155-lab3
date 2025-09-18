@@ -21,8 +21,8 @@ module seven_seg_tmux #(parameter P, parameter N) (
 
     seven_seg_dec dec (.s(sMuxed), .seg(seg));
 
-    assign pwr0 = ~sel;
-    assign pwr1 =  sel;
+    assign pwr0 = sel;
+    assign pwr1 = ~sel;
 
 endmodule
 
