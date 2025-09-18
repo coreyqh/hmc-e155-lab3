@@ -1,7 +1,7 @@
 always @* assume (~rstn == $initstate);
 always @(posedge clk) if ($past(count) == THRESHOLD) assume (!req);
 always @(posedge clk) if (req == 1'b1) assume (!$changed(activeCol));
-always @* assume ($onehot(activeCol) || activeCol == 4'b0);
+always @* assume ($onehot(~activeCol) || activeCol == 4'b1111);
 
 always @(posedge clk) begin
     if (rstn) begin

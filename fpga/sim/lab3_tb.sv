@@ -7,6 +7,8 @@ module lab3_tb;
     logic [6:0] seg;
     logic       pwr1, pwr0;
 
+    logic [31:0] testnum;
+
     lab3_top dut (.*);
 
     `ifdef VERILATOR
@@ -18,68 +20,72 @@ module lab3_tb;
 
     initial begin
         rstn = 0;
-        #1;
+        #1ms;
         rstn = 1;
     end
 
     initial begin
-        #2;
-        col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #1ms;
-        col = 4'b0000;
-        #1ms;
-        col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #1ms;
-        col = 4'b0000;
-        #1ms;
-        col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #1ms;
-        col = 4'b0000;
-        #1ms;
-        col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #10ms;
-        assert(dut.s0 == 4'hA);
-        col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #1ms;
-        col = 4'b0000;
-        #1ms;
-        col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #1ms;
-        col = 4'b0000;
-        #1ms;
-        col = row == 4'b0001 ? 4'b1000 : 4'b0000;
-        #1ms;
-        col = 4'b0000;
+
+        col = 4'b1111;
+
         #10ms;
 
-        col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #1ms;
-        col = 4'b0000;
-        #1ms;
-        col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #1ms;
-        col = 4'b0000;
-        #1ms;
-        col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #1ms;
-        col = 4'b0000;
-        #1ms;
-        col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #10ms;
-        assert(dut.s0 == 4'h5);
-        assert(dut.s1 == 4'hA);
-        col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #1ms;
-        col = 4'b0000;
-        #1ms;
-        col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #1ms;
-        col = 4'b0000;
-        #1ms;
-        col = row == 4'b0010 ? 4'b0010 : 4'b0000;
-        #1ms;
-        col = 4'b0000;
-        #10ms;
+        repeat (4) @(posedge dut.clk6MHz) begin
+            col = row == 4'b1110 ? 4'b0111 : 4'b1111;
+        end
+
+        col = 4'b0111;
+
+        #20ms;
+
+        $display("test 1");
+        assert (dut.s0 == 4'hA) else $display ("expecting A, actually %b", dut.s0);
+        assert (dut.s1 == 4'hf) else $display ("expecting F, actually %b", dut.s1);
+
+        #20ms;
+
+        $display("test 2");
+        assert (dut.s0 == 4'hA) else $display ("expecting A, actually %b", dut.s0);
+        assert (dut.s1 == 4'hf) else $display ("expecting F, actually %b", dut.s1);
+
+        col = 4'b1111;
+
+        #20ms;
+
+        $display("test 3");
+        assert (dut.s0 == 4'hA) else $display ("expecting A, actually %b", dut.s0);
+        assert (dut.s1 == 4'hf) else $display ("expecting F, actually %b", dut.s1);
+
+        #30ms
+
+        repeat (4) @(posedge dut.clk6MHz) begin
+            col = row == 4'b1101 ? 4'b1101 : 4'b1111;
+        end
+
+        col = 4'b1101;
+
+        #20ms;
+
+        $display("test 4");
+        assert (dut.s0 == 4'h5) else $display ("expecting 5, actually %b", dut.s0);
+        assert (dut.s1 == 4'hA) else $display ("expecting A, actually %b", dut.s1);
+
+        #20ms;
+
+        $display("test 5");
+        assert (dut.s0 == 4'h5) else $display ("expecting 5, actually %b", dut.s0);
+        assert (dut.s1 == 4'hA) else $display ("expecting A, actually %b", dut.s1);
+
+        col = 4'b1111;
+
+        #20ms;
+
+        $display("test 6");
+        assert (dut.s0 == 4'h5) else $display ("expecting 5, actually %b", dut.s0);
+        assert (dut.s1 == 4'hA) else $display ("expecting A, actually %b", dut.s1);
+
+        #20ms;
+
         $finish;
     end
 /* verilator lint_on UNUSEDSIGNAL */

@@ -8,7 +8,8 @@ module lab3_top (
     logic       clk6MHz;
     logic [3:0] colDly, colSync, activeCol;
     logic [3:0] rowDly, rowSync;
-    logic       stall,  strobe;
+    logic       stall, stallDly1;// stallDly2; // pipeline stall signal to stop cycling once the correct row is turned on
+    logic       strobe;
     logic [3:0] s1, s0, s0next;
     logic       dbhigh, dblow, dbreq;
 
@@ -23,21 +24,25 @@ module lab3_top (
 
     // clkDiv #(.D(480)) clkDiv100 (.fastClk(clk6MHz), .slowClk(clk100Hz), .rstn(rstn));
 
-    rowFSM rowFSM (.clk(clk6MHz), .rstn(rstn), .en(1'b1), .stall(stall), .row(row));
-
     always_ff @(posedge clk6MHz) begin
         if (~rstn) begin
-            colDly  <= 4'b0;
-            rowDly  <= 4'b0; 
-            colSync <= 4'b0;
-            rowSync <= 4'b0;
+            colDly    <= 4'b1111;
+            colSync   <= 4'b1111;
+            rowDly    <= 4'b0;
+            rowSync   <= 4'b0;
+            stallDly1  <= 1'b0;
+            // stallDly2  <= 1'b0;
         end else begin
-            colDly  <= col;
-            rowDly  <= row;
-            colSync <= colDly;
-            rowSync <= rowDly;
+            colDly    <= col;
+            colSync   <= colDly;
+            rowDly    <= row;
+            rowSync   <= rowDly;
+            stallDly1 <= stall;
+            // stallDly2 <= stallDly1;
         end
     end
+
+    rowFSM rowFSM (.clk(clk6MHz), .rstn(rstn), .en(1'b1), .stall(stallDly1), .row(row));
 
     ctrlFSM ctrlFSM (.clk(clk6MHz), .rstn(rstn), .en(1'b1), .col(colSync), .dbhigh(dbhigh), .dblow(dblow), .dbreq(dbreq), .stall(stall), .strobe(strobe), .activeCol(activeCol));
 
@@ -60,6 +65,3 @@ module lab3_top (
     seven_seg_tmux #(.P(280), .N(24)) tmux (.clk(clk6MHz), .rstn(rstn), .s1(s1), .s0(s0), .pwr1(pwr1), .pwr0(pwr0), .seg(seg));
 
 endmodule
-
-
-// TODO: recalculate clk division && debounce counter threshold

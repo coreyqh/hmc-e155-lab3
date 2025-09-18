@@ -30,18 +30,18 @@ module ctrlFSM (
     always_comb begin
         case (state) 
             IDLE:     begin
-                if (col != 4'b0) begin
+                if (col != 4'b1111) begin
                     nextstate     = DEBOUNCE;
                     casez (col)
-                        4'b1???: nextActiveCol = 4'b1000;
-                        4'b01??: nextActiveCol = 4'b0100;
-                        4'b001?: nextActiveCol = 4'b0010;
-                        4'b0001: nextActiveCol = 4'b0001;
+                        4'b0???: nextActiveCol = 4'b0111;
+                        4'b10??: nextActiveCol = 4'b1011;
+                        4'b110?: nextActiveCol = 4'b1101;
+                        4'b1110: nextActiveCol = 4'b1110;
                         default: nextActiveCol = 4'bxxxx; // shouldn't happen
                     endcase
                 end else begin
                     nextstate     = IDLE;
-                    nextActiveCol = 4'b0;
+                    nextActiveCol = 4'b1111;
                 end
             end
             DEBOUNCE: begin
@@ -55,10 +55,10 @@ module ctrlFSM (
             end
             STROBE:   begin
                 nextstate     = WAIT;
-                nextActiveCol = 4'b0;
+                nextActiveCol = activeCol;
             end
             WAIT:     begin
-                nextActiveCol = 4'b0;
+                nextActiveCol = activeCol;
                 if (dbhigh)
                     nextstate = IDLE;
                 else

@@ -6,7 +6,7 @@ always_ff @(posedge clk) begin
     if (rstn && $past(en) && $past(rstn)) begin
         assert (state != ERROR);
         assert (nextstate != ERROR);
-        assert($onehot(activeCol) || activeCol == 4'b0);
+        assert($onehot(~activeCol) || activeCol == 4'b1111);
         if ($past(state) == STROBE)
             assert (state != STROBE);
         if (state == DEBOUNCE)
@@ -26,7 +26,7 @@ always_ff @(posedge clk) begin
         else
             assert (!dbreq);
         if (state == DEBOUNCE && $past(state == IDLE))
-            assert ($past(col) != 4'b0);
+            assert ($past(col) != 4'b1111);
         if (state == IDLE && $past(state == DEBOUNCE))
             assert ($past(dbhigh));
         if (state == STROBE && $past(state == DEBOUNCE))
