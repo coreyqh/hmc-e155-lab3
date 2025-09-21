@@ -1,5 +1,5 @@
 module ctrlFSM (
-    input  logic       clk, rstn, en,
+    input  logic       clk, rstn,
     input  logic       dbhigh, dblow, // signals value high/low transition from debouncer
     input  logic [3:0] col, row,
     output logic       dbreq,         // send request to debouncer

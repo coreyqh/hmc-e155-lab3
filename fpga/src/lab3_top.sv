@@ -39,9 +39,9 @@ module lab3_top (
 
     rowFSM rowFSM (.clk(clk6MHz), .rstn(rstn), .row(preRow1));
 
-    ctrlFSM ctrlFSM (.clk(clk6MHz), .rstn(rstn), .col(colSync), .row(rowSync), .dbhigh(dbhigh), .dblow(dblow), .dbreq(dbreq), .update(update), .activeCol(activeCol), .activerow(activeRow));
+    ctrlFSM ctrlFSM (.clk(clk6MHz), .rstn(rstn), .col(colSync), .row(rowSync), .dbhigh(dbhigh), .dblow(dblow), .dbreq(dbreq), .update(update), .activeCol(activeCol), .activeRow(activeRow));
 
-    debouncer #(.THRESHOLD(6000)) debouncer (.clk(clk6MHz), .rstn(rstn), .req(dbreq), .activeCol(activeCol), .activeRow(activeRow), .col(colSync), .row(rowSync), .high(dbhigh), .low(dblow));
+    debouncer #(.THRESHOLD(600)) debouncer (.clk(clk6MHz), .rstn(rstn), .req(dbreq), .activeCol(activeCol), .activeRow(activeRow), .col(colSync), .row(rowSync), .high(dbhigh), .low(dblow));
 
     keypad_encoder keypad_encoder (.row(activeRow), .col(activeCol), .s(s0next));
 
@@ -57,7 +57,7 @@ module lab3_top (
             s1 <= s1;
         end
 
-    seven_seg_tmux #(.P(280), .N(24)) tmux (.clk(clk6MHz), .rstn(rstn), .s1(s1), .s0(s0), .pwr1(pwr1_o), .pwr0(pwr0_0), .seg(seg_o));
+    seven_seg_tmux #(.P(280), .N(24)) tmux (.clk(clk6MHz), .rstn(rstn), .s1(s1), .s0(s0), .pwr1(pwr1_o), .pwr0(pwr0_o), .seg(seg_o));
 
     assign row_o = preRow1; 
 

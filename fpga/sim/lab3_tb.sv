@@ -9,7 +9,14 @@ module lab3_tb;
 
     logic [31:0] testnum;
 
-    lab3_top dut (.*);
+    lab3_top dut (
+        .rstn(rstn),
+        .col_i(col),
+        .row_o(row),
+        .seg_o(seg),
+        .pwr1_o(pwr1),
+        .pwr0_o(pwr0)
+    );
 
     `ifdef VERILATOR
         initial begin
@@ -39,22 +46,22 @@ module lab3_tb;
         #20ms;
 
         $display("test 1");
-        assert (dut.s0 == 4'hA) else $display ("expecting A, actually %b", dut.s0);
-        assert (dut.s1 == 4'hf) else $display ("expecting F, actually %b", dut.s1);
+        assert (dut.s0 == 4'hA) $display ("SUCCESS: expecting A, actually %h", dut.s0); else $display ("ERROR: expecting A, actually %h", dut.s0);
+        assert (dut.s1 == 4'hf) $display ("SUCCESS: expecting F, actually %h", dut.s1); else $display ("ERROR: expecting F, actually %h", dut.s1);
 
         #20ms;
 
         $display("test 2");
-        assert (dut.s0 == 4'hA) else $display ("expecting A, actually %b", dut.s0);
-        assert (dut.s1 == 4'hf) else $display ("expecting F, actually %b", dut.s1);
+        assert (dut.s0 == 4'hA) $display ("SUCCESS: expecting A, actually %h", dut.s0); else $display ("ERROR: expecting A, actually %h", dut.s0);
+        assert (dut.s1 == 4'hf) $display ("SUCCESS: expecting F, actually %h", dut.s1); else $display ("ERROR: expecting F, actually %h", dut.s1);
 
         col = 4'b1111;
 
         #20ms;
 
         $display("test 3");
-        assert (dut.s0 == 4'hA) else $display ("expecting A, actually %b", dut.s0);
-        assert (dut.s1 == 4'hf) else $display ("expecting F, actually %b", dut.s1);
+        assert (dut.s0 == 4'hA) $display ("SUCCESS: expecting A, actually %h", dut.s0); else $display ("ERROR: expecting A, actually %h", dut.s0);
+        assert (dut.s1 == 4'hf) $display ("SUCCESS: expecting F, actually %h", dut.s1); else $display ("ERROR: expecting F, actually %h", dut.s1);
 
         #30ms
 
@@ -67,22 +74,22 @@ module lab3_tb;
         #20ms;
 
         $display("test 4");
-        assert (dut.s0 == 4'h5) else $display ("expecting 5, actually %b", dut.s0);
-        assert (dut.s1 == 4'hA) else $display ("expecting A, actually %b", dut.s1);
+        assert (dut.s0 == 4'h5) $display ("SUCCESS: expecting 5, actually %h", dut.s0); else $display ("ERROR: expecting 5, actually %h", dut.s0);
+        assert (dut.s1 == 4'hA) $display ("SUCCESS: expecting A, actually %h", dut.s1); else $display ("ERROR: expecting A, actually %h", dut.s1);
 
         #20ms;
 
         $display("test 5");
-        assert (dut.s0 == 4'h5) else $display ("expecting 5, actually %b", dut.s0);
-        assert (dut.s1 == 4'hA) else $display ("expecting A, actually %b", dut.s1);
+        assert (dut.s0 == 4'h5) $display ("SUCCESS: expecting 5, actually %h", dut.s0); else $display ("ERROR: expecting 5, actually %h", dut.s0);
+        assert (dut.s1 == 4'hA) $display ("SUCCESS: expecting A, actually %h", dut.s1); else $display ("ERROR: expecting A, actually %h", dut.s1);
 
         col = 4'b1111;
 
         #20ms;
 
         $display("test 6");
-        assert (dut.s0 == 4'h5) else $display ("expecting 5, actually %b", dut.s0);
-        assert (dut.s1 == 4'hA) else $display ("expecting A, actually %b", dut.s1);
+        assert (dut.s0 == 4'h5) $display ("SUCCESS: expecting 5, actually %h", dut.s0); else $display ("ERROR: expecting 5, actually %h", dut.s0);
+        assert (dut.s1 == 4'hA) $display ("SUCCESS: expecting A, actually %h", dut.s1); else $display ("ERROR: expecting A, actually %h", dut.s1);
 
         #20ms;
 

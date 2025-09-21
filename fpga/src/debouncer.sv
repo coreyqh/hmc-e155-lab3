@@ -36,7 +36,7 @@ module debouncer #(parameter THRESHOLD = 6000) (
             end
             HIGH: begin
                 if (row != activeRow) begin
-                    nextstate = LOW;
+                    nextstate = HIGH;
                     nextcount = count;
                 end else if ((~activeCol & col) != 4'b0) begin
                     nextstate = HIGH;
