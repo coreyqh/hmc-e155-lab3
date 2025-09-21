@@ -3,7 +3,7 @@ always @* assume (~rstn == $initstate);
 always @* assume (eventually(dbhigh || dblow));
 
 always_ff @(posedge clk) begin
-    if (rstn && $past(en) && $past(rstn)) begin
+    if (rstn) begin
         assert (state != ERROR);
         assert (nextstate != ERROR);
         assert($onehot(~activeCol) || activeCol == 4'b1111);
@@ -17,10 +17,6 @@ always_ff @(posedge clk) begin
             assert (strobe);
         else
             assert (!strobe);
-        if (state == IDLE)
-            assert (!stall);
-        else
-            assert (stall);
         if (state == DEBOUNCE || state == WAIT)
             assert (dbreq);
         else

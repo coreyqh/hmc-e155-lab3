@@ -1,15 +1,14 @@
 module lab3_top (
     input  logic       rstn,
-    input  logic [3:0] col,
-    output logic [3:0] row,
-    output logic [6:0] seg,
-    output logic       pwr1, pwr0
+    input  logic [3:0] col_i,
+    output logic [3:0] row_o,
+    output logic [6:0] seg_o,
+    output logic       pwr1_o, pwr0_o
 );
     logic       clk6MHz;
-    logic [3:0] colDly, colSync, activeCol;
-    logic [3:0] rowDly, rowSync;
-    logic       stall, stallDly1;// stallDly2; // pipeline stall signal to stop cycling once the correct row is turned on
-    logic       strobe;
+    logic [3:0] colDly1, colSync, activeCol;
+    logic [3:0] preRow1, preRow0, rowSync, activeRow;
+    logic       update;
     logic [3:0] s1, s0, s0next;
     logic       dbhigh, dblow, dbreq;
 
@@ -26,35 +25,31 @@ module lab3_top (
 
     always_ff @(posedge clk6MHz) begin
         if (~rstn) begin
-            colDly    <= 4'b1111;
+            colDly1   <= 4'b1111;
             colSync   <= 4'b1111;
-            rowDly    <= 4'b0;
+            preRow0   <= 4'b0;
             rowSync   <= 4'b0;
-            stallDly1  <= 1'b0;
-            // stallDly2  <= 1'b0;
         end else begin
-            colDly    <= col;
-            colSync   <= colDly;
-            rowDly    <= row;
-            rowSync   <= rowDly;
-            stallDly1 <= stall;
-            // stallDly2 <= stallDly1;
+            colDly1   <= col_i;
+            colSync   <= colDly1;
+            preRow0   <= preRow1;
+            rowSync   <= preRow0;
         end
     end
 
-    rowFSM rowFSM (.clk(clk6MHz), .rstn(rstn), .en(1'b1), .stall(stallDly1), .row(row));
+    rowFSM rowFSM (.clk(clk6MHz), .rstn(rstn), .row(preRow1));
 
-    ctrlFSM ctrlFSM (.clk(clk6MHz), .rstn(rstn), .en(1'b1), .col(colSync), .dbhigh(dbhigh), .dblow(dblow), .dbreq(dbreq), .stall(stall), .strobe(strobe), .activeCol(activeCol));
+    ctrlFSM ctrlFSM (.clk(clk6MHz), .rstn(rstn), .col(colSync), .row(rowSync), .dbhigh(dbhigh), .dblow(dblow), .dbreq(dbreq), .update(update), .activeCol(activeCol), .activerow(activeRow));
 
-    debouncer #(.THRESHOLD(6000)) debouncer (.clk(clk6MHz), .rstn(rstn), .req(dbreq), .en(1'b1), .activeCol(activeCol), .col(colSync), .high(dbhigh), .low(dblow));
+    debouncer #(.THRESHOLD(6000)) debouncer (.clk(clk6MHz), .rstn(rstn), .req(dbreq), .activeCol(activeCol), .activeRow(activeRow), .col(colSync), .row(rowSync), .high(dbhigh), .low(dblow));
 
-    keypad_encoder keypad_encoder (.row(rowSync), .col(activeCol), .s(s0next));
+    keypad_encoder keypad_encoder (.row(activeRow), .col(activeCol), .s(s0next));
 
     always_ff @(posedge clk6MHz)
         if (~rstn) begin
             s0 <= 4'hf;
             s1 <= 4'hf;
-        end else if (strobe) begin
+        end else if (update) begin
             s0 <= s0next;
             s1 <= s0;
         end else begin
@@ -62,6 +57,8 @@ module lab3_top (
             s1 <= s1;
         end
 
-    seven_seg_tmux #(.P(280), .N(24)) tmux (.clk(clk6MHz), .rstn(rstn), .s1(s1), .s0(s0), .pwr1(pwr1), .pwr0(pwr0), .seg(seg));
+    seven_seg_tmux #(.P(280), .N(24)) tmux (.clk(clk6MHz), .rstn(rstn), .s1(s1), .s0(s0), .pwr1(pwr1_o), .pwr0(pwr0_0), .seg(seg_o));
+
+    assign row_o = preRow1; 
 
 endmodule
