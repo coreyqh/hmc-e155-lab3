@@ -2,7 +2,7 @@ module debouncer #(parameter THRESHOLD = 6000) (
     input  logic       clk, rstn,
     input  logic       req,                  // request to debouce one bit
     input  logic [3:0] activeCol, activeRow, // which bit to debounce (onecold)
-    input  logic [3:0] col, row
+    input  logic [3:0] col, row,
     output logic       high,                 // valid high transition occurred
     output logic       low                   // valid low  transition occurred
 );

@@ -7,7 +7,7 @@ module ctrlFSM (
     output logic [3:0] activeCol, activeRow
 );
 
-    typedef enum logic [2:0] {IDLE, DEBOUNCE, STROBE, WAIT, ERROR} state_t;
+    typedef enum logic [2:0] {IDLE, DEBOUNCE, UPDATE, WAIT, ERROR} state_t;
     state_t state, nextstate;
     logic [3:0] nextActiveCol, nextActiveRow;
 
@@ -48,13 +48,13 @@ module ctrlFSM (
                 nextActiveCol = activeCol;
                 nextActiveRow = activeRow;
                 if (dblow)
-                    nextstate = STROBE;
+                    nextstate = UPDATE;
                 else if (dbhigh)
                     nextstate = IDLE;
                 else
                     nextstate = DEBOUNCE;
             end
-            STROBE:   begin
+            UPDATE:   begin
                 nextstate     = WAIT;
                 nextActiveCol = activeCol;
                 nextActiveRow = activeRow;
@@ -70,16 +70,18 @@ module ctrlFSM (
             ERROR:    begin
                 nextstate     = IDLE;
                 nextActiveCol = 4'bx; 
+                nextActiveRow = 4'bx; 
             end
             default:  begin // should never happen
                 nextstate     = ERROR;
                 nextActiveCol = 4'bx;
+                nextActiveRow = 4'bx;
             end
         endcase
     end
 
     // output logic
-    assign strobe = (state == STROBE);
+    assign update = (state == UPDATE);
     assign dbreq  = (state == DEBOUNCE) || (state == WAIT);
 
     `ifdef FORMAL

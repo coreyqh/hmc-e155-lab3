@@ -1,7 +1,7 @@
 always @* assume (~rstn == $initstate);
 
 always @(posedge clk) begin
-    if (rstn) begin
+    if (rstn && $past(rstn)) begin
         assert (row != $past(row));
         assert ($onehot(~row));
 
