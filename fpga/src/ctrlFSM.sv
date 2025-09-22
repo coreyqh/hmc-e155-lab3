@@ -4,7 +4,8 @@ module ctrlFSM (
     input  logic [3:0] col, row,
     output logic       dbreq,         // send request to debouncer
     output logic       update,        // enable fifo flops to push input value to 7-segment
-    output logic [3:0] activeCol, activeRow
+    output logic [3:0] activeCol, activeRow,
+    output logic [2:0] debugState     // for debugging
 );
 
     typedef enum logic [2:0] {IDLE, DEBOUNCE, UPDATE, WAIT, ERROR} state_t;
@@ -83,6 +84,14 @@ module ctrlFSM (
     // output logic
     assign update = (state == UPDATE);
     assign dbreq  = (state == DEBOUNCE) || (state == WAIT);
+
+    always_comb
+        case (state)
+            IDLE: debugState = 3'b000;
+            DEBOUNCE: debugState = 3'b001;
+            UPDATE: debugState = 3'b010;
+            WAIT: debugState = 3'b011;
+        endcase
 
     `ifdef FORMAL
         `include "ctrlFSM_sva.sv"
