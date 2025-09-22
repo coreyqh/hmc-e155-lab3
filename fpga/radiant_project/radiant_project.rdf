@@ -3,28 +3,25 @@
     <Options/>
     <Implementation title="impl_1" dir="impl_1" description="impl_1" synthesis="lse" default_strategy="Strategy1">
         <Options/>
-        <Source name="../fpga/src/clkDiv.sv" type="Verilog" type_short="Verilog">
+        <Source name="../src/ctrlFSM.sv" type="Verilog" type_short="Verilog">
             <Options VerilogStandard="System Verilog"/>
         </Source>
-        <Source name="../fpga/src/ctrlFSM.sv" type="Verilog" type_short="Verilog">
+        <Source name="../src/debouncer.sv" type="Verilog" type_short="Verilog">
             <Options VerilogStandard="System Verilog"/>
         </Source>
-        <Source name="../fpga/src/debouncer.sv" type="Verilog" type_short="Verilog">
+        <Source name="../src/keypad_encoder.sv" type="Verilog" type_short="Verilog">
             <Options VerilogStandard="System Verilog"/>
         </Source>
-        <Source name="../fpga/src/keypad_encoder.sv" type="Verilog" type_short="Verilog">
+        <Source name="../src/lab3_top.sv" type="Verilog" type_short="Verilog">
             <Options VerilogStandard="System Verilog"/>
         </Source>
-        <Source name="../fpga/src/lab3_top.sv" type="Verilog" type_short="Verilog">
+        <Source name="../src/rowFSM.sv" type="Verilog" type_short="Verilog">
             <Options VerilogStandard="System Verilog"/>
         </Source>
-        <Source name="../fpga/src/rowFSM.sv" type="Verilog" type_short="Verilog">
+        <Source name="../src/seven_seg_dec.sv" type="Verilog" type_short="Verilog">
             <Options VerilogStandard="System Verilog"/>
         </Source>
-        <Source name="../fpga/src/seven_seg_dec.sv" type="Verilog" type_short="Verilog">
-            <Options VerilogStandard="System Verilog"/>
-        </Source>
-        <Source name="../fpga/src/seven_seg_tmux.sv" type="Verilog" type_short="Verilog">
+        <Source name="../src/seven_seg_tmux.sv" type="Verilog" type_short="Verilog">
             <Options VerilogStandard="System Verilog"/>
         </Source>
     </Implementation>
