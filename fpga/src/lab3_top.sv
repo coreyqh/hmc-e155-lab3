@@ -33,16 +33,16 @@ module lab3_top (
         end else begin
             colDly1   <= col_i;
             colSync   <= colDly1;
-            preRow0   <= ~preRow1; // convert to active high
+            preRow0   <= preRow1; // convert to active high
             rowSync   <= preRow0;
         end
     end
 
     rowFSM rowFSM (.clk(clk6MHz), .rstn(rstn), .row(preRow1));
 
-    ctrlFSM ctrlFSM (.clk(clk6MHz), .rstn(rstn), .col(~colSync), .row(rowSync), .dbhigh(dbhigh), .dblow(dblow), .dbreq(dbreq), .update(update), .activeCol(activeCol), .activeRow(activeRow), .debugState(debugState)); // convert to active high
+    ctrlFSM ctrlFSM (.clk(clk6MHz), .rstn(rstn), .col(colSync), .row(rowSync), .dbhigh(dbhigh), .dblow(dblow), .dbreq(dbreq), .update(update), .activeCol(activeCol), .activeRow(activeRow), .debugState(debugState)); // convert to active high
 
-    debouncer #(.THRESHOLD(600)) debouncer (.clk(clk6MHz), .rstn(rstn), .req(dbreq), .activeCol(activeCol), .activeRow(activeRow), .col(~colSync), .row(rowSync), .high(dbhigh), .low(dblow)); // convert to active high
+    debouncer #(.THRESHOLD(600)) debouncer (.clk(clk6MHz), .rstn(rstn), .req(dbreq), .activeCol(activeCol), .activeRow(activeRow), .col(colSync), .row(rowSync), .high(dbhigh), .low(dblow)); // convert to active high
 
     keypad_encoder keypad_encoder (.row(activeRow), .col(activeCol), .s(s0next));
 
@@ -60,6 +60,6 @@ module lab3_top (
 
     seven_seg_tmux #(.P(280), .N(24)) tmux (.clk(clk6MHz), .rstn(rstn), .s1(s1), .s0(s0), .pwr1(pwr1_o), .pwr0(pwr0_o), .seg(seg_o));
 
-    assign row_o = ~preRow1; // convert to active high
+    assign row_o = preRow1; // convert to active high
 
 endmodule

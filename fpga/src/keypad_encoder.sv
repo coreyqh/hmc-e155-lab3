@@ -3,7 +3,7 @@ module keypad_encoder (
     output logic [3:0] s
 );
     always_comb
-        case({~row, ~col}) // convert from onecold to onehot for readability
+        case({row, col}) // convert from onecold to onehot for readability
             {4'b0001, 4'b0001}: s = 4'h1;
             {4'b0001, 4'b0010}: s = 4'h2;
             {4'b0001, 4'b0100}: s = 4'h3;

@@ -5,7 +5,7 @@ module rowFSM (
 
     always_ff @(posedge clk) begin
         if (~rstn) 
-            row <= 4'b0111;
+            row <= 4'b1000;
         else
             row <= {row[0], row[3:1]};
     end

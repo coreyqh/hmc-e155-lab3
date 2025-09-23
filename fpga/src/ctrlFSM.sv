@@ -16,8 +16,8 @@ module ctrlFSM (
     always_ff @(posedge clk) begin
         if (~rstn) begin
             state     <= IDLE;
-            activeCol <= nextActiveCol;
-            activeRow <= nextActiveRow;
+            activeCol <= 4'b0000;
+            activeRow <= 4'b0000;
         end else begin
             state     <= nextstate;
             activeCol <= nextActiveCol;
@@ -29,28 +29,28 @@ module ctrlFSM (
     always_comb begin
         case (state) 
             IDLE:     begin
-                if (col != 4'b1111) begin
+                if (col != 4'b0000) begin
                     nextstate     = DEBOUNCE;
                     nextActiveRow = row;
                     casez (col)
-                        4'b0???: nextActiveCol = 4'b0111;
-                        4'b10??: nextActiveCol = 4'b1011;
-                        4'b110?: nextActiveCol = 4'b1101;
-                        4'b1110: nextActiveCol = 4'b1110;
+                        4'b1???: nextActiveCol = 4'b1000;
+                        4'b01??: nextActiveCol = 4'b0100;
+                        4'b001?: nextActiveCol = 4'b0010;
+                        4'b0001: nextActiveCol = 4'b0001;
                         default: nextActiveCol = 4'bxxxx; // shouldn't happen
                     endcase
                 end else begin
                     nextstate     = IDLE;
-                    nextActiveCol = 4'b1111;
-                    nextActiveRow = 4'b1111;
+                    nextActiveCol = 4'b0000;
+                    nextActiveRow = 4'b0000;
                 end
             end
             DEBOUNCE: begin
                 nextActiveCol = activeCol;
                 nextActiveRow = activeRow;
-                if (dblow)
+                if (dbhigh)
                     nextstate = UPDATE;
-                else if (dbhigh)
+                else if (dblow)
                     nextstate = IDLE;
                 else
                     nextstate = DEBOUNCE;
@@ -63,7 +63,7 @@ module ctrlFSM (
             WAIT:     begin
                 nextActiveCol = activeCol;
                 nextActiveRow = activeRow;
-                if (dbhigh)
+                if (dblow)
                     nextstate = IDLE;
                 else
                     nextstate = WAIT;
