@@ -1,3 +1,7 @@
+// debouncer_sva.sv
+// written: Corey Hickson chickson@hmc.edu 9/14/2025
+// Purpose: formal design properties for the debouncer
+
 always @* assume (~rstn == $initstate);
 always @(posedge clk) if ($past(high) || $past(low)) assume (!req);
 always @(posedge clk) if ($past(req)) assume (!$changed(activeCol));

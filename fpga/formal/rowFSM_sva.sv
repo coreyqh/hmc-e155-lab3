@@ -1,3 +1,7 @@
+// rowFSM_sva.sv
+// written: Corey Hickson chickson@hmc.edu 9/14/2025
+// Purpose: formal design properties for the row driver FSM
+
 always @* assume (~rstn == $initstate);
 
 always @(posedge clk) begin

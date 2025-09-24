@@ -1,3 +1,7 @@
+// ctrlFSM_sva.sv
+// written: Corey Hickson chickson@hmc.edu 9/14/2025
+// Purpose: formal design properties for the main controller
+
 always @* assume (~rstn == $initstate);
 
 always @* assume (eventually(dbhigh || dblow));

@@ -1,3 +1,7 @@
+// seven_seg_tmux.sv
+// written: Corey Hickson chickson@hmc.edu 9/14/2025
+// Purpose: a TDM to drive two 7-segment displays using a single decoder
+
 module seven_seg_tmux #(parameter P, parameter N) (
     input  logic       clk, rstn, 
     input  logic [3:0] s1, s0,

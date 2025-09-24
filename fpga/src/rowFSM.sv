@@ -1,3 +1,7 @@
+// rowFSM.sv
+// written: Corey Hickson chickson@hmc.edu 9/14/2025
+// Purpose: a shift register to drive one row of the keypad matrix at a time
+
 module rowFSM (
     input  logic       clk, rstn,
     output logic [3:0] row

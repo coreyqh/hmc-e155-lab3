@@ -1,3 +1,6 @@
+// keypad_encoder_sva.sv
+// written: Corey Hickson chickson@hmc.edu 9/14/2025
+// Purpose: formal design properties for the keypad encoder
 
 rand const reg [7:0] rand_input;
 rand const reg [3:0] rand_output;

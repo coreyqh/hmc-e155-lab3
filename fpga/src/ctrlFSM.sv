@@ -1,3 +1,7 @@
+// ctrlFSM.sv
+// written: Corey Hickson chickson@hmc.edu 9/14/2025
+// Purpose: main controller for the design, reads rows/cols data and makes requests to the debouncer
+
 module ctrlFSM (
     input  logic       clk, rstn,
     input  logic       dbhigh, dblow, // signals value high/low transition from debouncer

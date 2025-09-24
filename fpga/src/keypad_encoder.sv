@@ -1,3 +1,7 @@
+// keypad_encoder.sv
+// written: Corey Hickson chickson@hmc.edu 9/14/2025
+// Purpose: To encode the row and column of a pushed button into the hex value displayed on that button
+
 module keypad_encoder (
     input  logic [3:0] row, col,
     output logic [3:0] s

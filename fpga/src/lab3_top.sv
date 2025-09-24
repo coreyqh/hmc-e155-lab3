@@ -1,3 +1,7 @@
+// lab3_top.sv
+// written: Corey Hickson chickson@hmc.edu 9/14/2025
+// Purpose: top level design entity, reads keypad inputs and displays them on the two seven segment displays
+
 module lab3_top (
     input  logic       rstn,
     input  logic [3:0] col_i,

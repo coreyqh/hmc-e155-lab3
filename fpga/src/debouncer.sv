@@ -1,3 +1,7 @@
+// debouncer.sv
+// written: Corey Hickson chickson@hmc.edu 9/14/2025
+// Purpose: to debounce button pushes and releases for one ket at a time, at the request of the main controller
+
 module debouncer #(parameter THRESHOLD = 6000) (
     input  logic       clk, rstn,
     input  logic       req,                  // request to debouce one bit

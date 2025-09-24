@@ -1,3 +1,7 @@
+// lab3_tb.sv
+// written: Corey Hickson chickson@hmc.edu 9/14/2025
+// Purpose: a simple simulation testbench for demonstrating glue logic in the top level module
+
 `timescale 1ms/1ns
 /* verilator lint_off UNUSEDSIGNAL */
 module lab3_tb;
