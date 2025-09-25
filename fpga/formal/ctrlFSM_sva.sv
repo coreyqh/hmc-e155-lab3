@@ -10,7 +10,7 @@ always_ff @(posedge clk) begin
     if (rstn && $past(rstn)) begin
         assert (state != ERROR);
         assert (nextstate != ERROR);
-        assert($onehot(~activeCol) || activeCol == 4'b1111);
+        assert($onehot(activeCol) || activeCol == 4'b0000);
         if ($past(state) == UPDATE)
             assert (state != UPDATE);
         if (state == DEBOUNCE)
@@ -26,10 +26,10 @@ always_ff @(posedge clk) begin
         else
             assert (!dbreq);
         if (state == DEBOUNCE && $past(state == IDLE))
-            assert ($past(col) != 4'b1111);
+            assert ($past(col) != 4'b0000);
         if (state == IDLE && $past(state == DEBOUNCE))
-            assert ($past(dbhigh));
-        if (state == UPDATE && $past(state == DEBOUNCE))
             assert ($past(dblow));
+        if (state == UPDATE && $past(state == DEBOUNCE))
+            assert ($past(dbhigh));
     end
 end
