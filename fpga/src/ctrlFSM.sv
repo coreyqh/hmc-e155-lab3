@@ -95,6 +95,7 @@ module ctrlFSM (
             DEBOUNCE: debugState = 3'b001;
             UPDATE: debugState = 3'b010;
             WAIT: debugState = 3'b011;
+            default: debugState = 3'b0;
         endcase
 
     `ifdef FORMAL

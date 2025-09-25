@@ -10,6 +10,7 @@ module lab3_tb;
     logic [3:0] row;
     logic [6:0] seg;
     logic       pwr1, pwr0;
+    logic [2:0] debugState;
 
     logic [31:0] testnum;
 
@@ -19,7 +20,8 @@ module lab3_tb;
         .row_o(row),
         .seg_o(seg),
         .pwr1_o(pwr1),
-        .pwr0_o(pwr0)
+        .pwr0_o(pwr0), 
+        .debugState(debugState)
     );
 
     `ifdef VERILATOR
@@ -37,15 +39,15 @@ module lab3_tb;
 
     initial begin
 
-        col = 4'b1111;
+        col = 4'b0000;
 
         #10ms;
 
         repeat (4) @(posedge dut.clk6MHz) begin
-            col = row == 4'b1110 ? 4'b0111 : 4'b1111;
+            col = row == 4'b0001 ? 4'b1000 : 4'b0000;
         end
 
-        col = 4'b0111;
+        col = 4'b1000;
 
         #20ms;
 
@@ -59,7 +61,7 @@ module lab3_tb;
         assert (dut.s0 == 4'hA) $display ("SUCCESS: expecting A, actually %h", dut.s0); else $display ("ERROR: expecting A, actually %h", dut.s0);
         assert (dut.s1 == 4'hf) $display ("SUCCESS: expecting F, actually %h", dut.s1); else $display ("ERROR: expecting F, actually %h", dut.s1);
 
-        col = 4'b1111;
+        col = 4'b0000;
 
         #20ms;
 
@@ -70,10 +72,10 @@ module lab3_tb;
         #30ms
 
         repeat (4) @(posedge dut.clk6MHz) begin
-            col = row == 4'b1101 ? 4'b1101 : 4'b1111;
+            col = row == 4'b0010 ? 4'b0010 : 4'b0000;
         end
 
-        col = 4'b1101;
+        col = 4'b0010;
 
         #20ms;
 
@@ -87,7 +89,7 @@ module lab3_tb;
         assert (dut.s0 == 4'h5) $display ("SUCCESS: expecting 5, actually %h", dut.s0); else $display ("ERROR: expecting 5, actually %h", dut.s0);
         assert (dut.s1 == 4'hA) $display ("SUCCESS: expecting A, actually %h", dut.s1); else $display ("ERROR: expecting A, actually %h", dut.s1);
 
-        col = 4'b1111;
+        col = 4'b0000;
 
         #20ms;
 
